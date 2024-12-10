@@ -7,7 +7,7 @@
         {
             InitializeComponent();
         }
-
+        /*
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -16,10 +16,10 @@
             this.Window.MaximumHeight = 1000;
             this.Window.MaximumWidth = 1600;
         }
-
+        */
         private async void StartButton_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new GamePage());
+            await Navigation.PushAsync(new PlayerSelectionPage());
         }
 
         private void QuitButton_Clicked(object sender, EventArgs e)
