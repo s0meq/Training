@@ -12,7 +12,7 @@ public partial class GamePage : ContentPage
     public GamePage()
 	{
 		InitializeComponent();
-        BindingContext = this;
+        //BindingContext = this;
         Moves = new ObservableCollection<Move>();
         movesList.ItemsSource = Moves;
     }
