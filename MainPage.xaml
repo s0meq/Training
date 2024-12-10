@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Training.MainPage">
+
+    <Grid
+        ColumnDefinitions="*, *, *"
+        RowDefinitions="200, *"
+        Padding="10"
+        BackgroundColor="Gray">
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="0"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            Text="RISTINOLLA"
+            FontSize="Header"/>
+
+        <Grid
+            Grid.Column="1"
+            Grid.Row="1"
+            RowSpacing="10"
+            ColumnDefinitions="*"
+            RowDefinitions="*, *"
+            Padding="5">
+
+            <Border
+                Grid.Column="0"
+                Grid.Row="0"
+                StrokeThickness="3"
+                Stroke="Gray"
+                IsVisible="True">
+
+                <Grid
+                    RowDefinitions="*, *"
+                    RowSpacing="20">
+                    <Button
+                        x:Name="StartButton"
+                        Text="PELAA"
+                        TextColor="Black"
+                        FontAttributes="Bold"
+                        FontSize="Large"
+                        BackgroundColor="DarkGray"
+                        Grid.Row="0"
+                        Padding="10"
+                        MinimumHeightRequest="90"
+                        MaximumHeightRequest="120"
+                        Clicked="StartButton_Clicked"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="End"
+                        CornerRadius="20"/>
+                    <Button
+                        x:Name="QuitButton"
+                        Text="LOPETA"
+                        TextColor="Black"
+                        FontAttributes="Bold"
+                        FontSize="Large"
+                        BackgroundColor="DarkGray"
+                        Padding="10"
+                        Grid.Row="1"
+                        MinimumHeightRequest="90"
+                        MaximumHeightRequest="120"
+                        Clicked="QuitButton_Clicked"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Start"
+                        CornerRadius="20"/>
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

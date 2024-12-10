@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Training.GamePage"
+             Title="GamePage">
+
+    <Grid
+        ColumnDefinitions="*, *"
+        RowDefinitions="100, *"
+        BackgroundColor="Gray">
+
+        <Label
+            Grid.Column="0"
+            Grid.Row="0"
+            Text="PELI"
+            FontSize="Header"
+            HorizontalOptions="Center"
+            VerticalOptions="End"/>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="0"
+            Text="SIIRROT"
+            FontSize="Header"
+            HorizontalOptions="Center"
+            VerticalOptions="End"/>
+
+        <Border
+            Grid.Column="0"
+            Grid.Row="1"
+            Padding="100"
+            Margin="10"
+            Stroke="Black"/>
+
+        <Grid
+            Grid.Column="0"
+            Grid.Row="1"
+            ColumnDefinitions="40, *, 40"
+            RowDefinitions="*, 60">
+
+            <Border
+                Grid.Column="1"
+                Grid.Row="0"
+                MinimumWidthRequest="600"
+                MinimumHeightRequest="600"
+                MaximumWidthRequest="600"
+                MaximumHeightRequest="600"
+                Stroke="Black"/>
+
+            <Grid
+                Grid.Column="1"
+                Grid.Row="0"
+                MinimumWidthRequest="600"
+                MinimumHeightRequest="600"
+                MaximumWidthRequest="600"
+                MaximumHeightRequest="600"
+                ColumnDefinitions="200, 200, 200"
+                RowDefinitions="200, 200, 200">
+                <Border
+                    Grid.Column="0"
+                    Grid.Row="0">
+                    <Button
+                        x:Name="A1"
+                        AutomationId="A1"
+                        Text=" "
+                        Clicked="SquareButton_Clicked"/>
+                </Border>
+                <Border
+                    Grid.Column="1"
+                    Grid.Row="0">
+                    <Button
+                        x:Name="B1"
+                        AutomationId="B1"
+                        Text=" "
+                        Clicked="SquareButton_Clicked"/>
+                </Border>
+                <Border
+                    Grid.Column="2"
+                    Grid.Row="0">
+                    <Button
+                        x:Name="C1"
+                        AutomationId="C1"
+                        Text=" "
+                        Clicked="SquareButton_Clicked"/>
+                </Border>
+
+
+                <Border
+                    Grid.Column="0"
+                    Grid.Row="1">
+                    <Button
+                        x:Name="A2"
+                        AutomationId="A2"
+                        Text=" "
+                        Clicked="SquareButton_Clicked"/>
+                </Border>
+                <Border
+                    Grid.Column="1"
+                    Grid.Row="1">
+                    <Button
+                        x:Name="B2"
+                        AutomationId="B2"
+                        Text=" "
+                        Clicked="SquareButton_Clicked"/>
+                </Border>
+                <Border
+                    Grid.Column="2"
+                    Grid.Row="1">
+                    <Button
+                        x:Name="C2"
+                        AutomationId="C2"
+                        Text=" "
+                        Clicked="SquareButton_Clicked"/>
+                </Border>
+
+
+                <Border
+                    Grid.Column="0"
+                    Grid.Row="2">
+                    <Button
+                        x:Name="A3"
+                        AutomationId="A3"
+                        Text=" "
+                        Clicked="SquareButton_Clicked"/>
+                </Border>
+                <Border
+                    Grid.Column="1"
+                    Grid.Row="2">
+                    <Button
+                        x:Name="B3"
+                        AutomationId="B3"
+                        Text=" "
+                        Clicked="SquareButton_Clicked"/>
+                </Border>
+                <Border
+                    Grid.Column="2"
+                    Grid.Row="2">
+                    <Button
+                        x:Name="C3"
+                        AutomationId="C3"
+                        Text=" "
+                        Clicked="SquareButton_Clicked"/>
+                </Border>
+            </Grid>
+
+            <Label
+                Grid.Column="1"
+                Grid.Row="1"
+                Text="Pelaajan 1 vuoro"
+                FontSize="Large"
+                VerticalOptions="Start"/>
+
+            <Label
+                x:Name="Player1Definition"
+                Grid.Column="0"
+                Grid.Row="0"
+                Text="Pelaaja 1: X"
+                FontSize="Medium"/>
+            <Label
+                x:Name="Player2Definition"
+                Grid.Column="2"
+                Grid.Row="0"
+                Text="Pelaaja 2: O"
+                FontSize="Medium"/>
+
+        </Grid>
+
+        <Grid
+            Grid.Column="1"
+            Grid.Row="1"
+            ColumnDefinitions="*"
+            RowDefinitions="800, *">
+        
+            <ListView 
+                x:Name="movesList"
+                Grid.Column="0"
+                Grid.Row="0"
+                SeparatorColor="Black"
+                HorizontalOptions="Fill"
+                VerticalOptions="Fill"
+                SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid 
+                                Padding="10"
+                                ColumnDefinitions="*, *, *"
+                                RowDefinitions="*">
+                                <Label
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    Text="{Binding PlayerName}"
+                                    HorizontalOptions="End"/>
+                                <Label
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    Text="{Binding PlayedSquareName}"
+                                    HorizontalOptions="Center"/>
+                                <Label
+                                    Grid.Column="2"
+                                    Grid.Row="0"
+                                    Text="{Binding PlayedTurn}"
+                                    HorizontalOptions="Start"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</ContentPage>
