@@ -22,20 +22,21 @@
                             <Grid
                                 ColumnDefinitions="*, *, *">
                                 <Label
+                                    x:Name="FirstNameLabel"
                                     Grid.Column="0"
-                                    FontSize="Large"
+                                    FontSize="Title"
                                     Text="{Binding FirstName}"
-                                    HorizontalOptions="Center"/>
+                                    HorizontalOptions="End"/>
                                 <Label
                                     Grid.Column="1"
                                     Text="{Binding LastName}"
-                                    FontSize="Large"
+                                    FontSize="Title"
                                     HorizontalOptions="Center"/>
                                 <Label
                                     Grid.Column="2"
                                     Text="{Binding DateOfBirth}"
-                                    FontSize="Large"
-                                    HorizontalOptions="Center"/>
+                                    FontSize="Title"
+                                    HorizontalOptions="Start"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -53,20 +54,21 @@
                             <Grid
                                 ColumnDefinitions="*, *, *">
                                 <Label
+                                    x:Name="FirstNameLabel"
                                     Grid.Column="0"
-                                    FontSize="Large"
+                                    FontSize="Title"
                                     Text="{Binding FirstName}"
-                                    HorizontalOptions="Center"/>
+                                    HorizontalOptions="End"/>
                                 <Label
                                     Grid.Column="1"
                                     Text="{Binding LastName}"
-                                    FontSize="Large"
+                                    FontSize="Title"
                                     HorizontalOptions="Center"/>
                                 <Label
                                     Grid.Column="2"
                                     Text="{Binding DateOfBirth}"
-                                    FontSize="Large"
-                                    HorizontalOptions="Center"/>
+                                    FontSize="Title"
+                                    HorizontalOptions="Start"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

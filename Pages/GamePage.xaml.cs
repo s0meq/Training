@@ -5,15 +5,23 @@ namespace Training;
 public partial class GamePage : ContentPage
 {
 	Move move;
+    PlayerSelectionPage PlayerSelectionPage { get; set; }
     public ObservableCollection<Move> Moves { get; set; }
 	int playerTurn = 1;
     int playedTurns = 0;
     string sSelectedSquare;
-    public GamePage()
+    string player1Name, player2Name;
+    public GamePage(PlayerSelectionPage sharedPlayerSelectionPage)
 	{
 		InitializeComponent();
-        //BindingContext = this;
         Moves = new ObservableCollection<Move>();
+        PlayerSelectionPage = sharedPlayerSelectionPage;
+        //get player names from PlayerSelectionPage and assign to player definitions
+        PlayerSelectionPage.AssignedPlayers(out player1Name, out player2Name);
+        Player1Definition.Text = player1Name;
+        Player2Definition.Text = player2Name;
+        TurnDefinition.Text = $"Pelaajan {player1Name} vuoro";
+
         movesList.ItemsSource = Moves;
     }
 
@@ -35,7 +43,14 @@ public partial class GamePage : ContentPage
             }
         }
         playedTurns++;
-        move.PlayerName = $"Pelaaja: {playerTurn}";
+        if (playerTurn == 1)
+        {
+            move.PlayerName = $"Pelaaja: {player1Name}";
+        }
+        else if (playerTurn == 2)
+        {
+            move.PlayerName = $"Pelaaja: {player2Name}";
+        }
         move.PlayedSquareName = $"Pelattu Ruutu: {sSelectedSquare}";
         move.PlayedTurn = $"Pelatut vuorot: {playedTurns}";
         Moves.Add(move);
@@ -48,11 +63,27 @@ public partial class GamePage : ContentPage
             {
                 button.IsEnabled = false;
             }
-            await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {playerTurn} voitti pelin!", "Lopeta");
+            if (playerTurn == 1)
+            {
+                await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {player1Name} voitti pelin!", "Lopeta");
+            }
+            else if (playerTurn == 2)
+            {
+                await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {player2Name} voitti pelin!", "Lopeta");
+            }
+
         }
         else
         {
             playerTurn = playerTurn == 1 ? 2 : 1;
+            if(playerTurn == 1)
+            {
+                TurnDefinition.Text = $"Pelaajan {player1Name} vuoro";
+            }
+            else if(playerTurn == 2)
+            {
+                TurnDefinition.Text = $"Pelaajan {player2Name} vuoro";
+            }
         }
     }
 

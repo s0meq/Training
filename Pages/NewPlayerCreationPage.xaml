@@ -35,6 +35,7 @@
                 Grid.Column="1"
                 HorizontalOptions="Fill"
                 VerticalOptions="Fill"
+                BackgroundColor="Gray"
                 Clicked="CancelButton_Clicked"/>
             <Button
                 x:Name="SaveNewButton"
@@ -42,6 +43,7 @@
                 Grid.Column="2"
                 HorizontalOptions="Fill"
                 VerticalOptions="Fill"
+                BackgroundColor="Gray"
                 Clicked="SaveNewButton_Clicked"/>
         </Grid>
     </VerticalStackLayout>

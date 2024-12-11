@@ -2,9 +2,11 @@ namespace Training;
 
 public partial class NewPlayerCreationPage : ContentPage
 {
-	public NewPlayerCreationPage()
+    PlayerSelectionPage playerSelectionPage;
+	public NewPlayerCreationPage(PlayerSelectionPage sharedPlayerSelectionPage)
 	{
 		InitializeComponent();
+        playerSelectionPage = sharedPlayerSelectionPage;
 	}
 
     private void CancelButton_Clicked(object sender, EventArgs e)
@@ -19,11 +21,12 @@ public partial class NewPlayerCreationPage : ContentPage
         {
             player.FirstName = FirstName.Text;
             player.LastName = LastName.Text;
-            player.DateOfBirth = DateOfBirth.Date.ToString();
+            player.DateOfBirth = DateOfBirth.Date.ToShortDateString();
             player.Wins = 0;
             player.Losses = 0;
             player.Draws = 0;
             player.MinutesPlayed = 0;
+            playerSelectionPage.Players.Add(player);
             await Navigation.PopAsync();
         } catch (Exception ex)
         {
