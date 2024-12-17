@@ -5,8 +5,10 @@ namespace Training;
 public partial class GamePage : ContentPage
 {
 	Move move;
-    PlayerSelectionPage PlayerSelectionPage { get; set; }
+    CurrentPlayers players;
+    PlayerSelectionPage playerSelectionPage { get; set; }
     public ObservableCollection<Move> Moves { get; set; }
+    
 	int playerTurn = 1;
     int playedTurns = 0;
     string sSelectedSquare;
@@ -15,9 +17,12 @@ public partial class GamePage : ContentPage
 	{
 		InitializeComponent();
         Moves = new ObservableCollection<Move>();
-        PlayerSelectionPage = sharedPlayerSelectionPage;
+        playerSelectionPage = sharedPlayerSelectionPage;
         //get player names from PlayerSelectionPage and assign to player definitions
-        PlayerSelectionPage.AssignedPlayers(out player1Name, out player2Name);
+        //PlayerSelectionPage.AssignedPlayers(out player1Name, out player2Name);
+        players = playerSelectionPage.AssignedPlayers(out CurrentPlayers currentPlayers);
+        player1Name = players.PlayerOne.FirstName;
+        player2Name = players.PlayerTwo.FirstName;
         Player1Definition.Text = player1Name;
         Player2Definition.Text = player2Name;
         TurnDefinition.Text = $"Pelaajan {player1Name} vuoro";
@@ -65,16 +70,76 @@ public partial class GamePage : ContentPage
             }
             if (playerTurn == 1)
             {
+                //Current players are removed from the list on PlayerSelectionPage
+                //and the instance which has the updated wins, losses or draws
+                //is added to the list
+                //This is done for following situations:
+                //player1 win
+                //player2 win
+                //draw
+
                 await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {player1Name} voitti pelin!", "Lopeta");
+                var updatedPlayer = playerSelectionPage.selectedPlayers.PlayerOne.AddWin();
+                var updatedPlayer2 = playerSelectionPage.selectedPlayers.PlayerTwo.AddLoss();
+
+                if (playerSelectionPage.Players.Contains(playerSelectionPage.selectedPlayers.PlayerOne))
+                {
+                    playerSelectionPage.Players.Remove(playerSelectionPage.selectedPlayers.PlayerOne);
+                    playerSelectionPage.selectedPlayers.PlayerOne = updatedPlayer;
+                    playerSelectionPage.Players.Add(playerSelectionPage.selectedPlayers.PlayerOne);
+                }
+                if (playerSelectionPage.Players.Contains(playerSelectionPage.selectedPlayers.PlayerTwo))
+                {
+                    playerSelectionPage.Players.Remove(playerSelectionPage.selectedPlayers.PlayerTwo);
+                    playerSelectionPage.selectedPlayers.PlayerTwo = updatedPlayer2;
+                    playerSelectionPage.Players.Add(playerSelectionPage.selectedPlayers.PlayerTwo);
+                }
+
             }
             else if (playerTurn == 2)
             {
                 await DisplayAlert("Peli p‰‰ttyi", $"Pelaaja {player2Name} voitti pelin!", "Lopeta");
-            }
+                var updatedPlayer = playerSelectionPage.selectedPlayers.PlayerOne.AddLoss();
+                var updatedPlayer2 = playerSelectionPage.selectedPlayers.PlayerTwo.AddWin();
 
+                if (playerSelectionPage.Players.Contains(playerSelectionPage.selectedPlayers.PlayerOne))
+                {
+                    playerSelectionPage.Players.Remove(playerSelectionPage.selectedPlayers.PlayerOne);
+                    playerSelectionPage.selectedPlayers.PlayerOne = updatedPlayer;
+                    playerSelectionPage.Players.Add(playerSelectionPage.selectedPlayers.PlayerOne);
+                }
+                if (playerSelectionPage.Players.Contains(playerSelectionPage.selectedPlayers.PlayerTwo))
+                {
+                    playerSelectionPage.Players.Remove(playerSelectionPage.selectedPlayers.PlayerTwo);
+                    playerSelectionPage.selectedPlayers.PlayerTwo = updatedPlayer2;
+                    playerSelectionPage.Players.Add(playerSelectionPage.selectedPlayers.PlayerTwo);
+                }
+
+            }
+            await Navigation.PopAsync();
+        }
+        else if (!WinningConditionMet() && playedTurns == 9)
+        {
+            await DisplayAlert("Peli p‰‰ttyi", $"Kumpikaan ei voittanut: \nTasapeli", "Lopeta");
+            var updatedPlayer = playerSelectionPage.selectedPlayers.PlayerOne.AddDraw();
+            var updatedPlayer2 = playerSelectionPage.selectedPlayers.PlayerTwo.AddDraw();
+
+            if (playerSelectionPage.Players.Contains(playerSelectionPage.selectedPlayers.PlayerOne))
+            {
+                playerSelectionPage.Players.Remove(playerSelectionPage.selectedPlayers.PlayerOne);
+                playerSelectionPage.selectedPlayers.PlayerOne = updatedPlayer;
+                playerSelectionPage.Players.Add(playerSelectionPage.selectedPlayers.PlayerOne);
+            }
+            if (playerSelectionPage.Players.Contains(playerSelectionPage.selectedPlayers.PlayerTwo))
+            {
+                playerSelectionPage.Players.Remove(playerSelectionPage.selectedPlayers.PlayerTwo);
+                playerSelectionPage.selectedPlayers.PlayerTwo = updatedPlayer2;
+                playerSelectionPage.Players.Add(playerSelectionPage.selectedPlayers.PlayerTwo);
+            }
         }
         else
         {
+            //no winning conditions or draw yet, NEXT!!!
             playerTurn = playerTurn == 1 ? 2 : 1;
             if(playerTurn == 1)
             {

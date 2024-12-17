@@ -10,5 +10,14 @@ namespace Training
     {
         public PlayerProfile PlayerOne {  get; set; }
         public PlayerProfile PlayerTwo {  get; set; }
+
+        public CurrentPlayers UpdatePlayers(PlayerProfile playerOne, PlayerProfile playerTwo)
+        {
+            return new CurrentPlayers
+            {
+                PlayerOne = playerOne,
+                PlayerTwo = playerTwo
+            };
+        }
     }
 }

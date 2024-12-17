@@ -4,25 +4,27 @@ namespace Training;
 
 public partial class PlayerSelectionPage : ContentPage
 {
-    public ObservableCollection<PlayerProfile> Players { get; set; }
-    public CurrentPlayers selectedPlayers { get; set; }
-    public string Player1;
-    public string Player2;
+    public ObservableCollection<PlayerProfile> Players = new ObservableCollection<PlayerProfile>();
+    public CurrentPlayers selectedPlayers = new CurrentPlayers();
+
 
     public PlayerSelectionPage()
 	{
 		InitializeComponent();
         ReadPlayers();
-        Players = new ObservableCollection<PlayerProfile>();
-        selectedPlayers = new CurrentPlayers();
+
         SelectPlayerOne.ItemsSource = Players;
         SelectPlayerTwo.ItemsSource = Players;
-	}
+    }
 
     private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         var listToPickFrom = sender as ListView;
         var updatePlayers = selectedPlayers;
+        if (e.SelectedItem == null)
+        {
+            return; // Do nothing if no item is selected
+        }
 
         if (listToPickFrom == SelectPlayerOne)
         {
@@ -35,10 +37,9 @@ public partial class PlayerSelectionPage : ContentPage
         selectedPlayers = updatePlayers;
     }
 
-    public void AssignedPlayers(out string player1, out string player2)
+    public CurrentPlayers AssignedPlayers(out CurrentPlayers currentPlayers)
     {
-        player1 = selectedPlayers.PlayerOne.FirstName;
-        player2 = selectedPlayers.PlayerTwo.FirstName;
+        return currentPlayers = selectedPlayers.UpdatePlayers(selectedPlayers.PlayerOne, selectedPlayers.PlayerTwo);
     }
 
     private void ReadPlayers()
@@ -53,6 +54,8 @@ public partial class PlayerSelectionPage : ContentPage
 
     private async void StartButton_Clicked(object sender, EventArgs e)
     {
+        SelectPlayerOne.SelectedItem = null;
+        SelectPlayerTwo.SelectedItem = null;
         await Navigation.PushAsync(new GamePage(this));
     }
 
