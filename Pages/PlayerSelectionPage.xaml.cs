@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace Training;
 
@@ -15,6 +16,7 @@ public partial class PlayerSelectionPage : ContentPage
 
         SelectPlayerOne.ItemsSource = Players;
         SelectPlayerTwo.ItemsSource = Players;
+
     }
 
     private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -44,12 +46,22 @@ public partial class PlayerSelectionPage : ContentPage
 
     private void ReadPlayers()
     {
-        
+        string jsonString;
+        string filepath = AppDomain.CurrentDomain.BaseDirectory;
+        DirectoryInfo d = new DirectoryInfo(filepath);
+
+        foreach (var file in d.GetFiles("*.json"))
+        {
+            
+            jsonString = File.ReadAllText(file.FullName);
+            PlayerProfile playerProfile = JsonSerializer.Deserialize<PlayerProfile>(jsonString);
+        }
     }
 
     private async void NewButton_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new NewPlayerCreationPage(this));
+        WritePlayers();
     }
 
     private async void StartButton_Clicked(object sender, EventArgs e)
@@ -62,5 +74,30 @@ public partial class PlayerSelectionPage : ContentPage
     private void BackButton_Clicked(object sender, EventArgs e)
     {
         Navigation.PopAsync();
+    }
+
+    private async void WritePlayers()
+    {
+        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        string filePath;
+        string fileName;
+        string jsonString;
+
+
+        try
+        {
+            foreach (var player in Players)
+            {
+                fileName = player.FirstName + ".json";
+                filePath = Path.Combine(baseDir, fileName);
+                jsonString = JsonSerializer.Serialize(player);
+                File.WriteAllText(filePath, jsonString);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Warning", "Could not write to file: \n{1}", "OK", ex.ToString());
+        }
+
     }
 }
