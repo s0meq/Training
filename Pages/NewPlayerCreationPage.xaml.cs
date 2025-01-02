@@ -27,6 +27,7 @@ public partial class NewPlayerCreationPage : ContentPage
             player.Draws = 0;
             player.MinutesPlayed = 0;
             playerSelectionPage.Players.Add(player);
+            playerSelectionPage.WritePlayers();
             await Navigation.PopAsync();
         } catch (Exception ex)
         {

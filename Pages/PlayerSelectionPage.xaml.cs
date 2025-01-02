@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Training;
@@ -47,21 +48,21 @@ public partial class PlayerSelectionPage : ContentPage
     private void ReadPlayers()
     {
         string jsonString;
-        string filepath = AppDomain.CurrentDomain.BaseDirectory;
-        DirectoryInfo d = new DirectoryInfo(filepath);
+        string filePath = Path.GetTempPath();
+        DirectoryInfo d = new DirectoryInfo(filePath);
 
         foreach (var file in d.GetFiles("*.json"))
         {
             
             jsonString = File.ReadAllText(file.FullName);
             PlayerProfile playerProfile = JsonSerializer.Deserialize<PlayerProfile>(jsonString);
+            Players.Add(playerProfile);
         }
     }
 
     private async void NewButton_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new NewPlayerCreationPage(this));
-        WritePlayers();
     }
 
     private async void StartButton_Clicked(object sender, EventArgs e)
@@ -76,27 +77,65 @@ public partial class PlayerSelectionPage : ContentPage
         Navigation.PopAsync();
     }
 
-    private async void WritePlayers()
+    public async void WritePlayers()
     {
-        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-        string filePath;
-        string fileName;
-        string jsonString;
-
-
         try
         {
+            //Get path to temp to save each player in their own .json file in temp
+            string tempPath = Path.GetTempPath();
+            string filePath;
+            string fileName;
+            string jsonString;
+
+            await DisplayAlert("HUOM", $"{Players.Count} players to be written", "OK");
             foreach (var player in Players)
             {
-                fileName = player.FirstName + ".json";
-                filePath = Path.Combine(baseDir, fileName);
+                fileName = $"{player.FirstName}_{player.LastName}.json";
+                filePath = Path.Combine(tempPath, fileName);
                 jsonString = JsonSerializer.Serialize(player);
-                File.WriteAllText(filePath, jsonString);
+                await File.WriteAllTextAsync(filePath, jsonString);
             }
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Warning", "Could not write to file: \n{1}", "OK", ex.ToString());
+            await DisplayAlert("Warning", "Could not write to file: \n{0}", "OK", ex.ToString());
+        }
+
+    }
+    public async void SavePlayers()
+    {
+        try
+        {
+            //Save each updated player in their old .json file in temp
+            string tempPath = Path.GetTempPath();
+            string filePath;
+            string fileName;
+            string jsonString;
+
+            await DisplayAlert("HUOM", $"{selectedPlayers.PlayerOne.FirstName} and {selectedPlayers.PlayerTwo.FirstName} to be updated", "OK");
+
+
+            foreach (var player in Players)
+            {
+                if (player.Equals(selectedPlayers.PlayerOne))
+                {
+                    fileName = $"{player.FirstName}_{player.LastName}.json";
+                    filePath = Path.Combine(tempPath, fileName);
+                    jsonString = JsonSerializer.Serialize(player);
+                    await File.WriteAllTextAsync(filePath, jsonString);
+                }
+                else if (player.Equals(selectedPlayers.PlayerTwo))
+                {
+                    fileName = $"{player.FirstName}_{player.LastName}.json";
+                    filePath = Path.Combine(tempPath, fileName);
+                    jsonString = JsonSerializer.Serialize(player);
+                    await File.WriteAllTextAsync(filePath, jsonString);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Warning", "Could not write to file: \n{0}", "OK", ex.ToString());
         }
 
     }

@@ -116,6 +116,7 @@ public partial class GamePage : ContentPage
                 }
 
             }
+            playerSelectionPage.SavePlayers();
             await Navigation.PopAsync();
         }
         else if (!WinningConditionMet() && playedTurns == 9)
@@ -136,6 +137,8 @@ public partial class GamePage : ContentPage
                 playerSelectionPage.selectedPlayers.PlayerTwo = updatedPlayer2;
                 playerSelectionPage.Players.Add(playerSelectionPage.selectedPlayers.PlayerTwo);
             }
+            playerSelectionPage.SavePlayers();
+            await Navigation.PopAsync();
         }
         else
         {
