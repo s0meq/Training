@@ -1,4 +1,6 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Timers;
 
 namespace Training;
 
@@ -8,7 +10,11 @@ public partial class GamePage : ContentPage
     CurrentPlayers players;
     PlayerSelectionPage playerSelectionPage { get; set; }
     public ObservableCollection<Move> Moves { get; set; }
-    
+    //private DateTime startTime;
+    private System.Timers.Timer aTimer = new System.Timers.Timer(1000);
+    int minutesPlayed = 0;
+    int secondsPlayed = 0;
+
 	int playerTurn = 1;
     int playedTurns = 0;
     string sSelectedSquare;
@@ -27,6 +33,10 @@ public partial class GamePage : ContentPage
         Player2Definition.Text = player2Name;
         TurnDefinition.Text = $"Pelaajan {player1Name} vuoro";
 
+        aTimer.Elapsed += OnTimedEvent;
+        aTimer.Enabled = true;
+        aTimer.AutoReset = true;
+
         movesList.ItemsSource = Moves;
     }
 
@@ -38,7 +48,7 @@ public partial class GamePage : ContentPage
         Button[,] squares = { { A1, A2, A3 }, { B1, B2, B3 }, { C1, C2, C3 } };
         Button selectedSquare = sender as Button;
         move = new Move();
-        Console.WriteLine("Button clicked");
+        Debug.WriteLine("Button clicked");
         
         foreach (Button button in squares)
         {
@@ -47,7 +57,15 @@ public partial class GamePage : ContentPage
                 sSelectedSquare = button.AutomationId;
             }
         }
+
+        //start timer from the first played turn to measure played time
         playedTurns++;
+        //if (!aTimer.Enabled)
+        //{
+        //    aTimer.Start();
+        //}
+
+
         if (playerTurn == 1)
         {
             move.PlayerName = $"Pelaaja: {player1Name}";
@@ -64,6 +82,7 @@ public partial class GamePage : ContentPage
 
         if (WinningConditionMet())
         {
+            aTimer.Stop();
             foreach (Button button in squares)
             {
                 button.IsEnabled = false;
@@ -79,8 +98,8 @@ public partial class GamePage : ContentPage
                 //draw
 
                 await DisplayAlert("Peli päättyi", $"Pelaaja {player1Name} voitti pelin!", "Lopeta");
-                var updatedPlayer = playerSelectionPage.selectedPlayers.PlayerOne.AddWin();
-                var updatedPlayer2 = playerSelectionPage.selectedPlayers.PlayerTwo.AddLoss();
+                var updatedPlayer = playerSelectionPage.selectedPlayers.PlayerOne.AddWin(minutesPlayed, secondsPlayed);
+                var updatedPlayer2 = playerSelectionPage.selectedPlayers.PlayerTwo.AddLoss(minutesPlayed, secondsPlayed);
 
                 if (playerSelectionPage.Players.Contains(playerSelectionPage.selectedPlayers.PlayerOne))
                 {
@@ -99,8 +118,8 @@ public partial class GamePage : ContentPage
             else if (playerTurn == 2)
             {
                 await DisplayAlert("Peli päättyi", $"Pelaaja {player2Name} voitti pelin!", "Lopeta");
-                var updatedPlayer = playerSelectionPage.selectedPlayers.PlayerOne.AddLoss();
-                var updatedPlayer2 = playerSelectionPage.selectedPlayers.PlayerTwo.AddWin();
+                var updatedPlayer = playerSelectionPage.selectedPlayers.PlayerOne.AddLoss(minutesPlayed, secondsPlayed);
+                var updatedPlayer2 = playerSelectionPage.selectedPlayers.PlayerTwo.AddWin(minutesPlayed, secondsPlayed);
 
                 if (playerSelectionPage.Players.Contains(playerSelectionPage.selectedPlayers.PlayerOne))
                 {
@@ -117,13 +136,16 @@ public partial class GamePage : ContentPage
 
             }
             playerSelectionPage.SavePlayers();
+            
             await Navigation.PopAsync();
         }
+        //
         else if (!WinningConditionMet() && playedTurns == 9)
         {
+            aTimer.Stop();
             await DisplayAlert("Peli päättyi", $"Kumpikaan ei voittanut: \nTasapeli", "Lopeta");
-            var updatedPlayer = playerSelectionPage.selectedPlayers.PlayerOne.AddDraw();
-            var updatedPlayer2 = playerSelectionPage.selectedPlayers.PlayerTwo.AddDraw();
+            var updatedPlayer = playerSelectionPage.selectedPlayers.PlayerOne.AddDraw(minutesPlayed, secondsPlayed);
+            var updatedPlayer2 = playerSelectionPage.selectedPlayers.PlayerTwo.AddDraw(minutesPlayed, secondsPlayed);
 
             if (playerSelectionPage.Players.Contains(playerSelectionPage.selectedPlayers.PlayerOne))
             {
@@ -138,6 +160,7 @@ public partial class GamePage : ContentPage
                 playerSelectionPage.Players.Add(playerSelectionPage.selectedPlayers.PlayerTwo);
             }
             playerSelectionPage.SavePlayers();
+            
             await Navigation.PopAsync();
         }
         else
@@ -154,7 +177,7 @@ public partial class GamePage : ContentPage
             }
         }
     }
-
+    //All the possible winning conditions below
 	private bool WinningConditionMet()
 	{
         //Check for Vertical winning condition
@@ -203,4 +226,17 @@ public partial class GamePage : ContentPage
         //return false if no winning conditions are met
         return false;
 	}
+    private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        secondsPlayed++;
+        if (secondsPlayed == 60)
+        {
+            minutesPlayed++;
+            secondsPlayed = 0;
+        }
+        Dispatcher.Dispatch(() =>
+        {
+            ElapsedTime.Text = $"{minutesPlayed:D2}:{secondsPlayed:D2}";
+        });
+    }
 }

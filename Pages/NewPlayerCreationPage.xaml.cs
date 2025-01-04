@@ -26,6 +26,7 @@ public partial class NewPlayerCreationPage : ContentPage
             player.Losses = 0;
             player.Draws = 0;
             player.MinutesPlayed = 0;
+            player.SecondsPlayed = 0;
             playerSelectionPage.Players.Add(player);
             playerSelectionPage.WritePlayers();
             await Navigation.PopAsync();

@@ -37,45 +37,70 @@
             ColumnDefinitions="40, *, 40"
             RowDefinitions="*, 60">
 
-            <Border
-                Grid.Column="1"
-                Grid.Row="0"
-                MinimumWidthRequest="600"
-                MinimumHeightRequest="600"
-                MaximumWidthRequest="600"
-                MaximumHeightRequest="600"
-                Stroke="Black"/>
+
 
             <Grid
                 Grid.Column="1"
                 Grid.Row="0"
-                MinimumWidthRequest="600"
-                MinimumHeightRequest="600"
-                MaximumWidthRequest="600"
-                MaximumHeightRequest="600"
-                ColumnDefinitions="200, 200, 200"
-                RowDefinitions="200, 200, 200">
-                <Border
+                MinimumWidthRequest="700"
+                MinimumHeightRequest="700"
+                MaximumWidthRequest="700"
+                MaximumHeightRequest="700"
+                ColumnDefinitions="100, 200, 200, 200"
+                RowDefinitions="100, 200, 200, 200">
+                <Label
                     Grid.Column="0"
-                    Grid.Row="0">
+                    Grid.Row="1"
+                    Margin="10"
+                    Text="1"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"/>
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Text="A"
+                    Margin="20"
+                    FontSize="Large"
+                    VerticalOptions="End"
+                    HorizontalOptions="Center"/>
+                <Border
+                    Grid.Column="1"
+                    Grid.Row="1">
                     <Button
                         x:Name="A1"
                         AutomationId="A1"
                         Text=" "
                         Clicked="SquareButton_Clicked"/>
                 </Border>
+                <Label
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    Text="B"
+                    Margin="20"
+                    FontSize="Large"
+                    VerticalOptions="End"
+                    HorizontalOptions="Center"/>
                 <Border
-                    Grid.Column="1"
-                    Grid.Row="0">
+                    Grid.Column="2"
+                    Grid.Row="1">
                     <Button
                         x:Name="B1"
                         AutomationId="B1"
                         Text=" "
                         Clicked="SquareButton_Clicked"/>
                 </Border>
+                <Label
+                    Grid.Column="3"
+                    Grid.Row="0"
+                    Text="C"
+                    Margin="20"
+                    FontSize="Large"
+                    VerticalOptions="End"
+                    HorizontalOptions="Center"/>
                 <Border
-                    Grid.Column="2"
-                    Grid.Row="0">
+                    Grid.Column="3"
+                    Grid.Row="1">
                     <Button
                         x:Name="C1"
                         AutomationId="C1"
@@ -83,10 +108,17 @@
                         Clicked="SquareButton_Clicked"/>
                 </Border>
 
-
-                <Border
+                <Label
                     Grid.Column="0"
-                    Grid.Row="1">
+                    Grid.Row="2"
+                    Margin="20"
+                    Text="2"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"/>
+                <Border
+                    Grid.Column="1"
+                    Grid.Row="2">
                     <Button
                         x:Name="A2"
                         AutomationId="A2"
@@ -94,8 +126,8 @@
                         Clicked="SquareButton_Clicked"/>
                 </Border>
                 <Border
-                    Grid.Column="1"
-                    Grid.Row="1">
+                    Grid.Column="2"
+                    Grid.Row="2">
                     <Button
                         x:Name="B2"
                         AutomationId="B2"
@@ -103,8 +135,8 @@
                         Clicked="SquareButton_Clicked"/>
                 </Border>
                 <Border
-                    Grid.Column="2"
-                    Grid.Row="1">
+                    Grid.Column="3"
+                    Grid.Row="2">
                     <Button
                         x:Name="C2"
                         AutomationId="C2"
@@ -112,10 +144,17 @@
                         Clicked="SquareButton_Clicked"/>
                 </Border>
 
-
-                <Border
+                <Label
                     Grid.Column="0"
-                    Grid.Row="2">
+                    Grid.Row="3"
+                    Margin="20"
+                    Text="3"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"/>
+                <Border
+                    Grid.Column="1"
+                    Grid.Row="3">
                     <Button
                         x:Name="A3"
                         AutomationId="A3"
@@ -123,8 +162,8 @@
                         Clicked="SquareButton_Clicked"/>
                 </Border>
                 <Border
-                    Grid.Column="1"
-                    Grid.Row="2">
+                    Grid.Column="2"
+                    Grid.Row="3">
                     <Button
                         x:Name="B3"
                         AutomationId="B3"
@@ -132,8 +171,8 @@
                         Clicked="SquareButton_Clicked"/>
                 </Border>
                 <Border
-                    Grid.Column="2"
-                    Grid.Row="2">
+                    Grid.Column="3"
+                    Grid.Row="3">
                     <Button
                         x:Name="C3"
                         AutomationId="C3"
@@ -145,7 +184,7 @@
             <Label
                 x:Name="TurnDefinition"
                 Grid.Column="1"
-                Grid.Row="1"
+                Grid.Row="2"
                 Text="Pelaajan 1 vuoro"
                 FontSize="Large"
                 VerticalOptions="Start"/>
@@ -205,6 +244,14 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Label
+                x:Name="ElapsedTime"
+                Grid.Column="0"
+                Grid.Row="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                Text="00:00"
+                FontSize="Large"/>
         </Grid>
     </Grid>
 </ContentPage>
