@@ -16,6 +16,7 @@ namespace Training
         public int Draws { get; set; }
         public int MinutesPlayed { get; set; }
         public int SecondsPlayed { get; set; }
+        public int ID { get; set; }
 
         public PlayerProfile AddWin(int minutesPlayed, int secondsPlayed)
         {

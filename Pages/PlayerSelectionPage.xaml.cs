@@ -8,16 +8,29 @@ public partial class PlayerSelectionPage : ContentPage
 {
     public ObservableCollection<PlayerProfile> Players = new ObservableCollection<PlayerProfile>();
     public CurrentPlayers selectedPlayers = new CurrentPlayers();
-
+    PlayerProfile s0meBot;
 
     public PlayerSelectionPage()
 	{
 		InitializeComponent();
-        ReadPlayers();
+        
 
         SelectPlayerOne.ItemsSource = Players;
         SelectPlayerTwo.ItemsSource = Players;
-
+        s0meBot = new()
+        {
+            FirstName = "s0me",
+            LastName = "Bot",
+            DateOfBirth = "-_-_-_-",
+            Wins = 0,
+            Losses = 0,
+            Draws = 0,
+            MinutesPlayed = 0,
+            SecondsPlayed = 0,
+            ID = 0
+        };
+        //Read saved players json files 
+        ReadPlayers();
     }
 
     private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -26,7 +39,7 @@ public partial class PlayerSelectionPage : ContentPage
         var updatePlayers = selectedPlayers;
         if (e.SelectedItem == null)
         {
-            return; // Do nothing if no item is selected
+            return;
         }
 
         if (listToPickFrom == SelectPlayerOne)
@@ -38,6 +51,16 @@ public partial class PlayerSelectionPage : ContentPage
             updatePlayers.PlayerTwo = (PlayerProfile)listToPickFrom.SelectedItem;
         }
         selectedPlayers = updatePlayers;
+        if (selectedPlayers.PlayerOne.ID == 0 || selectedPlayers.PlayerTwo.ID == 0)
+        {
+            IsBotGame.IsVisible = true;
+        }
+        else
+        {
+            IsBotGame.IsVisible = false;
+        }
+        DisplayPlayerOne.BindingContext = selectedPlayers.PlayerOne;
+        DisplayPlayerTwo.BindingContext = selectedPlayers.PlayerTwo;
     }
 
     public CurrentPlayers AssignedPlayers(out CurrentPlayers currentPlayers)
@@ -53,10 +76,22 @@ public partial class PlayerSelectionPage : ContentPage
 
         foreach (var file in d.GetFiles("*.json"))
         {
-            
-            jsonString = File.ReadAllText(file.FullName);
-            PlayerProfile playerProfile = JsonSerializer.Deserialize<PlayerProfile>(jsonString);
-            Players.Add(playerProfile);
+            if (file.Name == "s0me_Bot.json")
+            {
+                jsonString = File.ReadAllText(file.FullName);
+                s0meBot = JsonSerializer.Deserialize<PlayerProfile>(jsonString);
+                Players.Add(s0meBot);
+            }
+            else
+            {
+                jsonString = File.ReadAllText(file.FullName);
+                PlayerProfile playerProfile = JsonSerializer.Deserialize<PlayerProfile>(jsonString);
+                Players.Add(playerProfile);
+            }
+        }
+        if (Players.Count == 0)
+        {
+            Players.Add(s0meBot);
         }
     }
 
@@ -138,5 +173,10 @@ public partial class PlayerSelectionPage : ContentPage
             await DisplayAlert("Warning", "Could not write to file: \n{0}", "OK", ex.ToString());
         }
 
+    }
+
+    private async void SelectBotButton_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new GamePage(this));
     }
 }
