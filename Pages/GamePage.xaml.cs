@@ -46,6 +46,7 @@ public partial class GamePage : ContentPage
         {
             BotTurnX();
         }
+        
     }
     public async void SquareButton_Clicked(object sender, EventArgs e)
     {
@@ -183,12 +184,17 @@ public partial class GamePage : ContentPage
             else if(playerTurn == 2)
             {
                 TurnDefinition.Text = $"Pelaajan {player2Name} vuoro";
+                if (players.PlayerTwo.FirstName == "s0me")
+                {
+                    BotTurnO();
+                }
             }
         }
     }
     private void BotTurnX()
     {
         Random rnd = new Random();
+        Button checkWin, checkLoss;
         switch (playedTurns)
         {
             case 0:
@@ -431,34 +437,807 @@ public partial class GamePage : ContentPage
                 }
                 break;
             case 4:
-                // Game winning moves from corner plays
-                //Win from playing C3
-                if (!A1.IsEnabled && A1.Text == "X" && !B2.IsEnabled && B2.Text == "X" && C3.IsEnabled
-                    || !A3.IsEnabled && A3.Text == "X" && !B3.IsEnabled && B3.Text == "X" && C3.IsEnabled
-                    || !C1.IsEnabled && C1.Text == "X" && !C2.IsEnabled && C2.Text == "X" && C3.IsEnabled)
+                checkWin = CheckForWin("X");
+                if (CheckForWin != null)
                 {
-                    SquareButton_Clicked(C3, null);
+                    SquareButton_Clicked(checkWin, null);
                 }
-                //Win from playing C1
-                else if (!A3.IsEnabled && A3.Text == "X" && !B2.IsEnabled && B2.Text == "X" && C1.IsEnabled
-                        || !A1.IsEnabled && A1.Text == "X" && !B1.IsEnabled && B1.Text == "X" && C1.IsEnabled
-                        || !C3.IsEnabled && C3.Text == "X" && !C2.IsEnabled && C2.Text == "X" && C1.IsEnabled)
+                else
                 {
-                    SquareButton_Clicked(C1, null);
+                    checkLoss = CheckForLoss("O");
+                    if (checkLoss != null)
+                    {
+                        SquareButton_Clicked(checkLoss, null);
+                    }
+                    else
+                    {
+                        // When 0 Blocks from a corner or side
+                        //Corners:
+                        // O at C3
+                        if (A3.Text == "X" && B3.Text == "X" && C3.Text == "O")
+                        {
+                            if (B2.IsEnabled)
+                            {
+                                SquareButton_Clicked(B2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(A2, null);
+                            }
+
+                        }
+                        else if (A1.Text == "X" && B2.Text == "X" && C3.Text == "O")
+                        {
+                            if (B1.IsEnabled)
+                            {
+                                SquareButton_Clicked(B1, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(A2, null);
+                            }
+                        }
+                        else if (C1.Text == "X" && C2.Text == "X" && C3.Text == "O")
+                        {
+                            if (B2.IsEnabled)
+                            {
+                                SquareButton_Clicked(B2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(A1, null);
+                            }
+                        }
+                        // O at C1
+                        if (A3.Text == "X" && B2.Text == "X" && C1.Text == "O")
+                        {
+                            if (B3.IsEnabled)
+                            {
+                                SquareButton_Clicked(B3, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(A2, null);
+                            }
+                        }
+                        else if (A1.Text == "X" && B1.Text == "X" && C1.Text == "O")
+                        {
+                            if (B2.IsEnabled)
+                            {
+                                SquareButton_Clicked(B2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(A3, null);
+                            }
+                        }
+                        else if (C3.Text == "X" && C2.Text == "X" && C1.Text == "O")
+                        {
+                            if (B2.IsEnabled)
+                            {
+                                SquareButton_Clicked(B2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(A3, null);
+                            }
+                        }
+                        // O at A3
+                        if (A1.Text == "X" && A2.Text == "X" && A3.Text == "O")
+                        {
+                            if (B2.IsEnabled)
+                            {
+                                SquareButton_Clicked(B2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(C1, null);
+                            }
+                        }
+                        else if (C1.Text == "X" && B2.Text == "X" && A3.Text == "O")
+                        {
+                            if (B1.IsEnabled)
+                            {
+                                SquareButton_Clicked(B1, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(C2, null);
+                            }
+                        }
+                        else if (C3.Text == "X" && B3.Text == "X" && A3.Text == "O")
+                        {
+                            if (B2.IsEnabled)
+                            {
+                                SquareButton_Clicked(B2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(C1, null);
+                            }
+                        }
+                        // O at A1
+                        if (C1.Text == "X" && B1.Text == "X" && A1.Text == "O")
+                        {
+                            if (B2.IsEnabled)
+                            {
+                                SquareButton_Clicked(B2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(C3, null);
+                            }
+                        }
+                        else if (C3.Text == "X" && B2.Text == "X" && A1.Text == "O")
+                        {
+                            if (C2.IsEnabled)
+                            {
+                                SquareButton_Clicked(C2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(B3, null);
+                            }
+                        }
+                        else if (A3.Text == "X" && A2.Text == "X" && A1.Text == "O")
+                        {
+                            if (B2.IsEnabled)
+                            {
+                                SquareButton_Clicked(B2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(C3, null);
+                            }
+                        }
+                        //Sides:
+                        // O at A2
+                        else if (C2.Text == "X" && B2.Text == "X" && A2.Text == "O")
+                        {
+                            if (B3.IsEnabled)
+                            {
+                                SquareButton_Clicked(B3, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(A1, null);
+                            }
+                        }
+                        // O at B3
+                        else if (B1.Text == "X" && B2.Text == "X" && B3.Text == "O")
+                        {
+                            if (A2.IsEnabled)
+                            {
+                                SquareButton_Clicked(A2, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(C2, null);
+                            }
+                        }
+                        // O at B1
+                        else if (B3.Text == "X" && B2.Text == "X" && B1.Text == "O")
+                        {
+                            if (A3.IsEnabled)
+                            {
+                                SquareButton_Clicked(A3, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(C3, null);
+                            }
+                        }
+                        // O at C2
+                        else if (A2.Text == "X" && B2.Text == "X" && C2.Text == "O")
+                        {
+                            if (B1.IsEnabled)
+                            {
+                                SquareButton_Clicked(B1, null);
+                            }
+                            else
+                            {
+                                SquareButton_Clicked(C3, null);
+                            }
+                        }
+                        else
+                        {
+                                                // when X's are separated from each other
+                                                // .V.
+                            if (!A1.IsEnabled && A1.Text == "X" && !B3.IsEnabled && B3.Text == "X")
+                            {
+                                if (A3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A3, null);
+                                }
+                                else if (C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            else if (!C1.IsEnabled && C1.Text == "X" && !B3.IsEnabled && B3.Text == "X")
+                            {
+                                if (C3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                else if (B1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(B1, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            // >
+                            else if (!A1.IsEnabled && A1.Text == "X" && !C2.IsEnabled && C2.Text == "X")
+                            {
+                                if (C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else if (C3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            else if (!A3.IsEnabled && A3.Text == "X" && !C2.IsEnabled && C2.Text == "X")
+                            {
+                                if (C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else if (A1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            // A
+                            else if (!A3.IsEnabled && A3.Text == "X" && !B1.IsEnabled && B1.Text == "X")
+                            {
+                                if (A1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                else if (C3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            else if (!C3.IsEnabled && C3.Text == "X" && !B1.IsEnabled && B1.Text == "X")
+                            {
+                                if (C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else if (A3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A3, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            // <
+                            else if (!C1.IsEnabled && C1.Text == "X" && !A2.IsEnabled && A2.Text == "X")
+                            {
+                                if (A1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                else if (C2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C2, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            else if (!C3.IsEnabled && C3.Text == "X" && !A2.IsEnabled && A2.Text == "X")
+                            {
+                                if (A3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A3, null);
+                                }
+                                else if (C2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C2, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            // X
+                            else if (!A3.IsEnabled && A3.Text == "X" && !C1.IsEnabled && C1.Text == "X")
+                            {
+                                if (A2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A2, null);
+                                }
+                                else if (C2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C2, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            else if (!A1.IsEnabled && A1.Text == "X" && !C3.IsEnabled && C3.Text == "X")
+                            {
+                                if (A2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A2, null);
+                                }
+                                else if (C2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C2, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            // +
+                            else if (!B3.IsEnabled && B3.Text == "X" && !B1.IsEnabled && B1.Text == "X")
+                            {
+                                if (A1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                else if (C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                            else if (!A2.IsEnabled && A2.Text == "X" && !C2.IsEnabled && C2.Text == "X")
+                            {
+                                if (C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else if (C3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B2, null);
+                                }
+                            }
+                        }
+                    }
                 }
-                //win from playing A3
-                else if (!C1.IsEnabled && C1.Text == "X" && !B2.IsEnabled && B2.Text == "X" && A3.IsEnabled
-                        || !C3.IsEnabled && C3.Text == "X" && !B3.IsEnabled && B3.Text == "X" && A3.IsEnabled
-                        || !A1.IsEnabled && A1.Text == "X" && !A2.IsEnabled && A2.Text == "X" && A3.IsEnabled)
+                break;
+            case 6:
+
+                checkWin = CheckForWin("X");
+                if (CheckForWin != null)
                 {
-                    SquareButton_Clicked(A3, null);
+                    SquareButton_Clicked(checkWin, null);
                 }
-                //Win from playing A1
-                else if (!C3.IsEnabled && C3.Text == "X" && !B2.IsEnabled && B2.Text == "X" && A1.IsEnabled
-                        || !C1.IsEnabled && C1.Text == "X" && !B1.IsEnabled && B1.Text == "X" && A1.IsEnabled
-                        || !A3.IsEnabled && A3.Text == "X" && !A2.IsEnabled && A2.Text == "X" && A1.IsEnabled)
+                else
                 {
-                    SquareButton_Clicked(A1, null);
+                    checkLoss = CheckForLoss("O");
+                    if (checkLoss != null)
+                    {
+                        SquareButton_Clicked(checkLoss, null);
+                    }
+                    else
+                    {
+                        Button[] squares = { A1, A2, A3, B1, B2, B3, C1, C2, C3 };
+                        foreach (Button sqr in squares)
+                        {
+                            if (sqr.IsEnabled)
+                            {
+                                SquareButton_Clicked(sqr, null);
+                                break;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 8:
+                checkWin = CheckForWin("X");
+                if (CheckForWin != null)
+                {
+                    SquareButton_Clicked(checkWin, null);
+                }
+                else
+                {
+                    //Game not winnable, end the game
+                    Button[] squares = { A1, A2, A3, B1, B2, B3, C1, C2, C3 };
+                    foreach (Button sqr in squares)
+                    {
+                        if (sqr.IsEnabled)
+                        {
+                            SquareButton_Clicked(sqr, null);
+                            break;
+                        }
+                    }
+                }
+                break;
+        }
+    }
+    private void BotTurnO()
+    {
+        Random rnd = new Random();
+        Button checkWin, checkLoss;
+        switch (playedTurns)
+        {
+            case 1:
+                //Bot plays second turn, choose randomly from remaining spots
+                randomNumber = rnd.Next(1, 10);
+                switch (randomNumber)
+                {
+                    case 1:
+                        if (A1.IsEnabled)
+                        {
+                            SquareButton_Clicked(A1, null);
+                        }
+                        else
+                        {
+                            SquareButton_Clicked(C3, null);
+                        }
+                        break;
+                    case 2:
+                        if (A2.IsEnabled)
+                        {
+                            SquareButton_Clicked(A2, null);
+                        }
+                        else
+                        {
+                            SquareButton_Clicked(B2, null);
+                        }
+                        break;
+                    case 3:
+                        if (A3.IsEnabled)
+                        {
+                            SquareButton_Clicked(A3, null);
+                        }
+                        else
+                        {
+                            SquareButton_Clicked(C1, null);
+                        }
+                        break;
+                    case 4:
+                        if (B1.IsEnabled)
+                        {
+                            SquareButton_Clicked(B1, null);
+                        }
+                        else
+                        {
+                            SquareButton_Clicked(B2, null);
+                        }
+                        break;
+                    case 5:
+                        if (B2.IsEnabled)
+                        {
+                            SquareButton_Clicked(B2, null);
+                        }
+                        else
+                        {
+                            Button[] squares = { A1, A2, A3, B1, B3, C1, C2, C3 };
+                            int rand = rnd.Next(9);
+                            if (squares[rand].IsEnabled)
+                            {
+                                SquareButton_Clicked(squares[rand], null);
+                                break;
+                            }
+                            
+                        }
+                        break;
+                    case 6:
+                        if (B3.IsEnabled)
+                        {
+                            SquareButton_Clicked(B3, null);
+                        }
+                        else
+                        {
+                            SquareButton_Clicked(B1, null);
+                        }
+                        break;
+                    case 7:
+                        if (C1.IsEnabled)
+                        {
+                            SquareButton_Clicked(C1, null);
+                        }
+                        else
+                        {
+                            SquareButton_Clicked(B2, null);
+                        }
+                        break;
+                    case 8:
+                        if (C2.IsEnabled)
+                        {
+                            SquareButton_Clicked(C2, null);
+                        }
+                        else
+                        {
+                            SquareButton_Clicked(A2, null);
+                        }
+                        break;
+                    case 9:
+                        if (C3.IsEnabled)
+                        {
+                            SquareButton_Clicked(C3, null);
+                        }
+                        else
+                        {
+                            SquareButton_Clicked(B2, null);
+                        }
+                        break;
+                }
+                break;
+            case 3:
+                if (randomNumber == 1 || randomNumber == 3 || randomNumber == 7 || randomNumber == 9)
+                {
+                    if (B2.IsEnabled)
+                    {
+                        SquareButton_Clicked(B2, null);
+                    }
+                    else
+                    {
+                        int r = rnd.Next(1, 5);
+                        switch (r)
+                        {
+                            case 1:
+                                if (A2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A2, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(C2, null);
+                                }
+                                break;
+                            case 2:
+                                if (B1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(B1, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B3, null);
+                                }
+                                break;
+                            case 3:
+                                if (B3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(B3, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B1, null);
+                                }
+                                break;
+                            case 4:
+                                if (C2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C2, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(A2, null);
+                                }
+                                break;
+                        }
+                    }
+                }
+                else if (randomNumber == 2 || randomNumber == 4 || randomNumber == 6 || randomNumber == 8)
+                {
+                    int r = rnd.Next(1, 3);
+                    if (r + 1 == 3 && B2.IsEnabled)
+                    {
+                        SquareButton_Clicked(B2, null);
+                    }
+                    else if (r + 1 == 3 && !B2.IsEnabled)
+                    {
+                        checkLoss = CheckForLoss("X");
+                        if (checkLoss != null)
+                        {
+                            SquareButton_Clicked(checkLoss, null);
+                        }
+                    }
+                    else
+                    {
+                        switch (randomNumber)
+                        {
+                            case 2:
+
+                                if (r == 1 && A1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                else if (r == 1 && !A1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A3, null);
+                                }
+                                else if (r == 2 && A3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A3, null);
+                                }
+                                else if (r == 2 && !A3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                break;
+                            case 4:
+                                if (r == 1 && A1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                else if (r == 1 && !A1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else if (r == 2 && C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else if (r == 2 && !C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                break;
+                            case 6:
+                                if (r == 1 && A3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A3, null);
+                                }
+                                else if (r == 1 && !A3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                else if (r == 2 && C3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                else if (r == 2 && !C3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A3, null);
+                                }
+                                break;
+                            case 8:
+                                if (r == 1 && C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else if (r == 1 && !C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                else if (r == 2 && C3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                else if (r == 2 && !C3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    if (randomNumber == 5)
+                    {
+                        int r = rnd.Next(1, 9);
+                        switch (r)
+                        {
+                            case 1:
+                                if (A1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(A2, null);
+                                }
+                                break;
+                            case 2:
+                                if (A2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A2, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(A3, null);
+                                }
+                                break;
+                            case 3:
+                                if (A3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(A3, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B1, null);
+                                }
+                                break;
+                            case 4:
+                                if (B1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(B1, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(B3, null);
+                                }
+                                break;
+                            case 5:
+                                if (B3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(B3, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                break;
+                            case 6:
+                                if (C1.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C1, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(C2, null);
+                                }
+                                break;
+                            case 7:
+                                if (C2.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C2, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                break;
+                            case 8:
+                                if (C3.IsEnabled)
+                                {
+                                    SquareButton_Clicked(C3, null);
+                                }
+                                else
+                                {
+                                    SquareButton_Clicked(A1, null);
+                                }
+                                break;
+                        }
+                    }
+                }
+                break;
+            case 5:
+                checkWin = CheckForWin("X");
+                if (CheckForWin != null)
+                {
+                    SquareButton_Clicked(checkWin, null);
                 }
                 else
                 {
@@ -842,65 +1621,181 @@ public partial class GamePage : ContentPage
                     }
                 }
                 break;
-            case 6:
+            case 7:
                 // Game winning moves
-                //Win from playing C3
-                if (!A1.IsEnabled && A1.Text == "X" && !B2.IsEnabled && B2.Text == "X" && C3.IsEnabled
-                    || !A3.IsEnabled && A3.Text == "X" && !B3.IsEnabled && B3.Text == "X" && C3.IsEnabled
-                    || !C1.IsEnabled && C1.Text == "X" && !C2.IsEnabled && C2.Text == "X" && C3.IsEnabled)
+                checkWin = CheckForWin("O");
+                if (CheckForWin != null)
                 {
-                    SquareButton_Clicked(C3, null);
+                    SquareButton_Clicked(checkWin, null);
                 }
-                //Win from playing C1
-                else if (!A3.IsEnabled && A3.Text == "X" && !B2.IsEnabled && B2.Text == "X" && C1.IsEnabled
-                        || !A1.IsEnabled && A1.Text == "X" && !B1.IsEnabled && B1.Text == "X" && C1.IsEnabled
-                        || !C3.IsEnabled && C3.Text == "X" && !C2.IsEnabled && C2.Text == "X" && C1.IsEnabled)
+                else
                 {
-                    SquareButton_Clicked(C1, null);
-                }
-                //win from playing A3
-                else if (!C1.IsEnabled && C1.Text == "X" && !B2.IsEnabled && B2.Text == "X" && A3.IsEnabled
-                        || !C3.IsEnabled && C3.Text == "X" && !B3.IsEnabled && B3.Text == "X" && A3.IsEnabled
-                        || !A1.IsEnabled && A1.Text == "X" && !A2.IsEnabled && A2.Text == "X" && A3.IsEnabled)
-                {
-                    SquareButton_Clicked(A3, null);
-                }
-                //Win from playing A1
-                else if (!C3.IsEnabled && C3.Text == "X" && !B2.IsEnabled && B2.Text == "X" && A1.IsEnabled
-                        || !C1.IsEnabled && C1.Text == "X" && !B1.IsEnabled && B1.Text == "X" && A1.IsEnabled
-                        || !A3.IsEnabled && A3.Text == "X" && !A2.IsEnabled && A2.Text == "X" && A1.IsEnabled)
-                {
-                    SquareButton_Clicked(A1, null);
-                }
-                //Win from playing A2
-                else if (C2.Text == "X" && B2.Text == "X" && A2.IsEnabled
-                        || A1.Text == "X" && A3.Text == "X" && A2.IsEnabled)
-                {
-                    SquareButton_Clicked(A2, null);
-                }
-                //Win from playing B1
-                else if (B3.Text == "X" && B2.Text == "X" && B1.IsEnabled
-                        || A1.Text == "X" && C1.Text == "X" && B1.IsEnabled)
-                {
-                    SquareButton_Clicked(B1, null);
-                }
-                //Win from playing B3
-                else if (B1.Text == "X" && B2.Text == "X" && B3.IsEnabled
-                        || A3.Text == "X" && C3.Text == "X" && B3.IsEnabled)
-                {
-                    SquareButton_Clicked(B3, null);
-                }
-                //Win from playing C2
-                else if (A2.Text == "X" && B2.Text == "X" && C2.IsEnabled
-                        || C1.Text == "X" && C3.Text == "X" && C2.IsEnabled)
-                {
-                    SquareButton_Clicked(C2, null);
+                    checkLoss = CheckForLoss("X");
+                    if (checkLoss != null)
+                    {
+                        SquareButton_Clicked(checkLoss, null);
+                    }
+                    else
+                    {
+                        Button[] squares = { A1, A2, A3, B1, B2, B3, C1, C2, C3 };
+                        foreach (Button sqr in squares)
+                        {
+                            if (sqr.IsEnabled)
+                            {
+                                SquareButton_Clicked(sqr, null);
+                                break;
+                            }
+                        }
+                    }
                 }
                 break;
-            case 8:
+            case 9:
+                // Game winning moves
+                checkWin = CheckForWin("O");
+                if (CheckForWin != null)
+                {
+                    SquareButton_Clicked(checkWin, null);
+                }
+                else
+                {
+                    //Game not winnable, end the game
+                    Button[] squares = { A1, A2, A3, B1, B2, B3, C1, C2, C3 };
+                    foreach (Button sqr in squares)
+                    {
+                        if (sqr.IsEnabled)
+                        {
+                            SquareButton_Clicked(sqr, null);
+                            break;
+                        }
+                    }
+                }
                 break;
         }
     }
+    private Button CheckForLoss(string botInitial)
+    {
+        //No winning move available, check for opponents chance of winning
+        if (B1.Text == botInitial && B2.Text == botInitial && B3.IsEnabled
+            || A3.Text == botInitial && C3.Text == botInitial && B3.IsEnabled)
+        {
+            return B3;
+        }
+        else if (B3.Text == botInitial && B2.Text == botInitial && B1.IsEnabled
+                || A1.Text == botInitial && C1.Text == botInitial && B1.IsEnabled)
+        {
+            return B1;
+        }
+        else if (B2.Text == botInitial && C2.Text == botInitial && A2.IsEnabled
+                || A1.Text == botInitial && A3.Text == botInitial && A2.IsEnabled)
+        {
+            return A2;
+        }
+        else if (B2.Text == botInitial && A2.Text == botInitial && C2.IsEnabled
+                || C1.Text == botInitial && C3.Text == botInitial && C2.IsEnabled)
+        {
+            return C2;
+        }
+        //No wins from opponent when playing any of the sides either, check for corners
+        else
+        {
+            if (C1.Text == botInitial && B2.Text == botInitial && A3.IsEnabled
+                || A1.Text == botInitial && A2.Text == botInitial && A3.IsEnabled
+                || C3.Text == botInitial && B3.Text == botInitial && A3.IsEnabled)
+            {
+                return A3;
+            }
+            else if (A1.Text == botInitial && B2.Text == botInitial && C3.IsEnabled
+                    || C1.Text == botInitial && C2.Text == botInitial && C3.IsEnabled
+                    || A3.Text == botInitial && B3.Text == botInitial && C3.IsEnabled)
+            {
+                return C3;
+            }
+            else if (C1.Text == botInitial && B1.Text == botInitial && A1.IsEnabled
+                    || C3.Text == botInitial && B2.Text == botInitial && A1.IsEnabled
+                    || A3.Text == botInitial && A2.Text == botInitial && A1.IsEnabled)
+            {
+                return A1;
+            }
+            else if (A1.Text == botInitial && B1.Text == botInitial && C1.IsEnabled
+                    || C3.Text == botInitial && C2.Text == botInitial && C1.IsEnabled
+                    || A3.Text == botInitial && B2.Text == botInitial && C1.IsEnabled)
+            {
+                return C1;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+    private Button CheckForWin(string botInitial)
+    {
+        // Game winning moves
+        //Win from playing C3
+        if (!A1.IsEnabled && A1.Text == botInitial && !B2.IsEnabled && B2.Text == botInitial && C3.IsEnabled
+            || !A3.IsEnabled && A3.Text == botInitial && !B3.IsEnabled && B3.Text == botInitial && C3.IsEnabled
+            || !C1.IsEnabled && C1.Text == botInitial && !C2.IsEnabled && C2.Text == botInitial && C3.IsEnabled)
+        {
+            return C3;
+        }
+        //Win from playing C1
+        else if (!A3.IsEnabled && A3.Text == botInitial && !B2.IsEnabled && B2.Text == botInitial && C1.IsEnabled
+                || !A1.IsEnabled && A1.Text == botInitial && !B1.IsEnabled && B1.Text == botInitial && C1.IsEnabled
+                || !C3.IsEnabled && C3.Text == botInitial && !C2.IsEnabled && C2.Text == botInitial && C1.IsEnabled)
+        {
+            return C1;
+        }
+        //win from playing A3
+        else if (!C1.IsEnabled && C1.Text == botInitial && !B2.IsEnabled && B2.Text == botInitial && A3.IsEnabled
+                || !C3.IsEnabled && C3.Text == botInitial && !B3.IsEnabled && B3.Text == botInitial && A3.IsEnabled
+                || !A1.IsEnabled && A1.Text == botInitial && !A2.IsEnabled && A2.Text == botInitial && A3.IsEnabled)
+        {
+            return A3;
+        }
+        //Win from playing A1
+        else if (!C3.IsEnabled && C3.Text == botInitial && !B2.IsEnabled && B2.Text == botInitial && A1.IsEnabled
+                || !C1.IsEnabled && C1.Text == botInitial && !B1.IsEnabled && B1.Text == botInitial && A1.IsEnabled
+                || !A3.IsEnabled && A3.Text == botInitial && !A2.IsEnabled && A2.Text == botInitial && A1.IsEnabled)
+        {
+            return A1;
+        }
+        else if (playedTurns > 4)
+        {
+                    //Win from playing A2
+            if (C2.Text == botInitial && B2.Text == botInitial && A2.IsEnabled
+                || A1.Text == botInitial && A3.Text == botInitial && A2.IsEnabled)
+            {
+                return A2;
+            }
+            //Win from playing B1
+            else if (B3.Text == botInitial && B2.Text == botInitial && B1.IsEnabled
+                    || A1.Text == botInitial && C1.Text == botInitial && B1.IsEnabled)
+            {
+                return B1;
+            }
+            //Win from playing B3
+            else if (B1.Text == botInitial && B2.Text == botInitial && B3.IsEnabled
+                    || A3.Text == botInitial && C3.Text == botInitial && B3.IsEnabled)
+            {
+                return B3;
+            }
+            //Win from playing C2
+            else if (A2.Text == botInitial && B2.Text == botInitial && C2.IsEnabled
+                    || C1.Text == botInitial && C3.Text == botInitial && C2.IsEnabled)
+            {
+                return C2;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     //All the possible winning conditions below
     private bool WinningConditionMet()
 	{
