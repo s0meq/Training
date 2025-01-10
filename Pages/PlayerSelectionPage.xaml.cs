@@ -102,8 +102,8 @@ public partial class PlayerSelectionPage : ContentPage
 
     private async void StartButton_Clicked(object sender, EventArgs e)
     {
-        SelectPlayerOne.SelectedItem = null;
-        SelectPlayerTwo.SelectedItem = null;
+        //SelectPlayerOne.SelectedItem = null;
+        //SelectPlayerTwo.SelectedItem = null;
         await Navigation.PushAsync(new GamePage(this));
     }
 
@@ -122,7 +122,7 @@ public partial class PlayerSelectionPage : ContentPage
             string fileName;
             string jsonString;
 
-            await DisplayAlert("HUOM", $"{Players.Count} players to be written", "OK");
+            await DisplayAlert("HUOM", $"{Players.Count} pelaajaa tallennetaan.", "OK");
             foreach (var player in Players)
             {
                 fileName = $"{player.FirstName}_{player.LastName}.json";
@@ -147,7 +147,7 @@ public partial class PlayerSelectionPage : ContentPage
             string fileName;
             string jsonString;
 
-            await DisplayAlert("HUOM", $"{selectedPlayers.PlayerOne.FirstName} and {selectedPlayers.PlayerTwo.FirstName} to be updated", "OK");
+            await DisplayAlert("HUOM", $"Pelaajan {selectedPlayers.PlayerOne.FirstName} ja {selectedPlayers.PlayerTwo.FirstName} tiedot p‰ivitet‰‰n.", "OK");
 
 
             foreach (var player in Players)
@@ -173,10 +173,5 @@ public partial class PlayerSelectionPage : ContentPage
             await DisplayAlert("Warning", "Could not write to file: \n{0}", "OK", ex.ToString());
         }
 
-    }
-
-    private async void SelectBotButton_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new GamePage(this));
     }
 }

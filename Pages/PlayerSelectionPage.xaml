@@ -16,22 +16,49 @@
                 HeightRequest="500"
                 SelectionMode="Single"
                 ItemSelected="ListView_ItemSelected">
+                <ListView.Header>
+                    <Grid ColumnDefinitions="*, *, *, *, *">
+                        <Label 
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Text="Nimi"
+                            HorizontalOptions="Center"
+                            FontSize="Large"/>
+                        <Label 
+                            Grid.Column="2"
+                            Text="Voitot"
+                            HorizontalOptions="Center"
+                            FontSize="Large"/>
+                        <Label 
+                            Grid.Column="3"
+                            Text="Häviöt"
+                            HorizontalOptions="Center"
+                            FontSize="Large"/>
+                        <Label 
+                            Grid.Column="4"
+                            Text="Tasapelit"
+                            HorizontalOptions="Center"
+                            FontSize="Large"/>
+                    </Grid>
+                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid
-                                ColumnDefinitions="*, *, *, *, *, *">
+                                ColumnDefinitions="*, *, *, *, *">
                                 <Label
                                     x:Name="FirstNameLabel"
                                     Grid.Column="0"
+                                    Margin="0, 0, 5, 0"
                                     FontSize="Title"
                                     Text="{Binding FirstName}"
                                     HorizontalOptions="End"/>
                                 <Label
                                     Grid.Column="1"
+                                    Margin="5, 0, 0, 0"
                                     Text="{Binding LastName}"
                                     FontSize="Title"
-                                    HorizontalOptions="Center"/>
+                                    HorizontalOptions="Start"/>
                                 <Label
                                     Grid.Column="2"
                                     Text="{Binding Wins}"
@@ -47,11 +74,6 @@
                                     Text="{Binding Draws}"
                                     FontSize="Title"
                                     HorizontalOptions="Center"/>
-                                <Label
-                                    Grid.Column="5"
-                                    Text="{Binding DateOfBirth}"
-                                    FontSize="Title"
-                                    HorizontalOptions="Start"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -63,22 +85,49 @@
                 HeightRequest="500"
                 SelectionMode="Single"
                 ItemSelected="ListView_ItemSelected">
+                <ListView.Header>
+                    <Grid ColumnDefinitions="*, *, *, *, *">
+                        <Label 
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Text="Etunimi"
+                            HorizontalOptions="Center"
+                            FontSize="Large"/>
+                        <Label 
+                            Grid.Column="2"
+                            Text="Voitot"
+                            HorizontalOptions="Center"
+                            FontSize="Large"/>
+                        <Label 
+                            Grid.Column="3"
+                            Text="Häviöt"
+                            HorizontalOptions="Center"
+                            FontSize="Large"/>
+                        <Label 
+                            Grid.Column="4"
+                            Text="Tasapelit"
+                            HorizontalOptions="Center"
+                            FontSize="Large"/>
+                    </Grid>
+                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid
-                                ColumnDefinitions="*, *, *, *, *, *">
+                                ColumnDefinitions="*, *, *, *, *">
                                 <Label
                                     x:Name="FirstNameLabel"
                                     Grid.Column="0"
+                                    Margin="0, 0, 5, 0"
                                     FontSize="Title"
                                     Text="{Binding FirstName}"
                                     HorizontalOptions="End"/>
                                 <Label
                                     Grid.Column="1"
+                                    Margin="5, 0, 0, 0"
                                     Text="{Binding LastName}"
                                     FontSize="Title"
-                                    HorizontalOptions="Center"/>
+                                    HorizontalOptions="Start"/>
                                 <Label
                                     Grid.Column="2"
                                     Text="{Binding Wins}"
@@ -94,11 +143,6 @@
                                     Text="{Binding Draws}"
                                     FontSize="Title"
                                     HorizontalOptions="Center"/>
-                                <Label
-                                    Grid.Column="5"
-                                    Text="{Binding DateOfBirth}"
-                                    FontSize="Title"
-                                    HorizontalOptions="Start"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
