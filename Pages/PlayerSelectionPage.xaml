@@ -28,17 +28,17 @@
                             Grid.Column="2"
                             Text="Voitot"
                             HorizontalOptions="Center"
-                            FontSize="Large"/>
+                            FontSize="Medium"/>
                         <Label 
                             Grid.Column="3"
                             Text="Häviöt"
                             HorizontalOptions="Center"
-                            FontSize="Large"/>
+                            FontSize="Medium"/>
                         <Label 
                             Grid.Column="4"
                             Text="Tasapelit"
                             HorizontalOptions="Center"
-                            FontSize="Large"/>
+                            FontSize="Medium"/>
                     </Grid>
                 </ListView.Header>
                 <ListView.ItemTemplate>
@@ -90,24 +90,24 @@
                         <Label 
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Text="Etunimi"
+                            Text="Nimi"
                             HorizontalOptions="Center"
                             FontSize="Large"/>
                         <Label 
                             Grid.Column="2"
                             Text="Voitot"
                             HorizontalOptions="Center"
-                            FontSize="Large"/>
+                            FontSize="Medium"/>
                         <Label 
                             Grid.Column="3"
                             Text="Häviöt"
                             HorizontalOptions="Center"
-                            FontSize="Large"/>
+                            FontSize="Medium"/>
                         <Label 
                             Grid.Column="4"
                             Text="Tasapelit"
                             HorizontalOptions="Center"
-                            FontSize="Large"/>
+                            FontSize="Medium"/>
                     </Grid>
                 </ListView.Header>
                 <ListView.ItemTemplate>

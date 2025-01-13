@@ -10,6 +10,7 @@ public partial class GamePage : ContentPage
     PlayerSelectionPage playerSelectionPage { get; set; }
     public ObservableCollection<Move> Moves { get; set; }
     private System.Timers.Timer aTimer = new System.Timers.Timer(1000);
+    private System.Timers.Timer bTimer; // = new System.Timers.Timer();
     int minutesPlayed = 0;
     int secondsPlayed = 0;
 
@@ -170,26 +171,44 @@ public partial class GamePage : ContentPage
         {
             //no winning conditions or draw yet, NEXT!!!
             playerTurn = playerTurn == 1 ? 2 : 1;
-            if(playerTurn == 1)
+            //if playing against s0meBot, start a timer of 0,5 - 2 seconds before the bot makes it's move
+            //so that it feels more like a person rather than a computer making the moves.
+            if (players.PlayerOne.FirstName == "s0me" && playerTurn == 1)
+            {
+                Random randomThinkingTime = new Random();
+                int thinkingTime = randomThinkingTime.Next(500, 2100);
+                bTimer = new System.Timers.Timer(thinkingTime);
+                bTimer.Elapsed += OnTimedThinking;
+                bTimer.Enabled = true;
+                bTimer.AutoReset = false;
+
+            }
+            else if (players.PlayerTwo.FirstName == "s0me" && playerTurn == 2)
+            {
+                Random randomThinkingTime = new Random();
+                int thinkingTime = randomThinkingTime.Next(500, 2100);
+                bTimer = new System.Timers.Timer(thinkingTime);
+                bTimer.Elapsed += OnTimedThinking;
+                bTimer.Enabled = true;
+                bTimer.AutoReset = false;
+            }
+            if (playerTurn == 1)
             {
                 TurnDefinition.Text = $"Pelaajan {player1Name} vuoro";
-                if (players.PlayerOne.FirstName == "s0me")
-                {
-                    BotTurnX();
-                }
+
             }
             else if(playerTurn == 2)
             {
                 TurnDefinition.Text = $"Pelaajan {player2Name} vuoro";
-                if (players.PlayerTwo.FirstName == "s0me")
-                {
-                    BotTurnO();
-                }
+                
             }
         }
     }
     private void BotTurnX()
     {
+        //I could've used somekind of algorithm that makes the most "optimal move" 
+        //but figured it would feel more like playing against a person rather than feeling like a computer just throws the moves at you
+        // making the game impossible to win
         //While bot plays as X, use this as moves for bot
         Random rnd = new Random();
         Button checkWin, checkLoss, checkBlock;
@@ -701,6 +720,7 @@ public partial class GamePage : ContentPage
     }
     private void BotTurnO()
     {
+        //When s0meBot plays as O it's an easier opponent than if it plays as X
         // while bot plays as O, use this as instructions for moves
         Random rnd = new Random();
         Button checkWin, checkLoss, checkBlock;
@@ -1498,6 +1518,26 @@ public partial class GamePage : ContentPage
         //return false if no winning conditions are met
         return false;
 	}
+    private void OnTimedThinking(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        //Method for executing a "thinking time" for the bot before it makes the move
+        bTimer.Close();
+        if (playerTurn == 1)
+        {
+            Dispatcher.Dispatch(() =>
+            {
+                BotTurnX();
+            });
+        }
+        else if (playerTurn == 2)
+        {
+            Dispatcher.Dispatch(() =>
+            {
+                BotTurnO();
+            });
+
+        }
+    }
     private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
     {
         //Timer runs from the moment gamepage opens, and every 60 "events" (seconds) manually add minutes 
