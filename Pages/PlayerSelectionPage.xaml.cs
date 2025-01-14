@@ -17,6 +17,8 @@ public partial class PlayerSelectionPage : ContentPage
 
         SelectPlayerOne.ItemsSource = Players;
         SelectPlayerTwo.ItemsSource = Players;
+
+        //Create s0meBot but add it only if it doesnt exist already
         s0meBot = new()
         {
             FirstName = "s0me",
@@ -29,10 +31,17 @@ public partial class PlayerSelectionPage : ContentPage
             SecondsPlayed = 0,
             ID = 0
         };
-        //Read saved players json files 
+        
         ReadPlayers();
     }
 
+    //Pass current (selected) players to gamepage
+    public CurrentPlayers AssignedPlayers(out CurrentPlayers currentPlayers)
+    {
+        return currentPlayers = selectedPlayers.UpdatePlayers(selectedPlayers.PlayerOne, selectedPlayers.PlayerTwo);
+    }
+
+    //UI events
     private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         var listToPickFrom = sender as ListView;
@@ -41,7 +50,7 @@ public partial class PlayerSelectionPage : ContentPage
         {
             return;
         }
-
+        //Multiple listviews, check which one raised the event and assign players based on that
         if (listToPickFrom == SelectPlayerOne)
         {
             updatePlayers.PlayerOne = (PlayerProfile)listToPickFrom.SelectedItem;
@@ -51,81 +60,89 @@ public partial class PlayerSelectionPage : ContentPage
             updatePlayers.PlayerTwo = (PlayerProfile)listToPickFrom.SelectedItem;
         }
         selectedPlayers = updatePlayers;
-        if (selectedPlayers.PlayerOne.ID == 0 || selectedPlayers.PlayerTwo.ID == 0)
+
+        //If s0meBot is selected, display text about that the game is played against a computer.
+        if (selectedPlayers.PlayerOne.ID == 0)
         {
             IsBotGame.IsVisible = true;
         }
-        else
+        if (selectedPlayers.PlayerTwo.ID == 0)
+        {
+            IsBotGame.IsVisible = true;
+        }
+        if (selectedPlayers.PlayerOne.ID != 0 && selectedPlayers.PlayerTwo.ID != 0)
         {
             IsBotGame.IsVisible = false;
         }
+
+        //Binding context to display selected players
         DisplayPlayerOne.BindingContext = selectedPlayers.PlayerOne;
         DisplayPlayerTwo.BindingContext = selectedPlayers.PlayerTwo;
     }
-
-    public CurrentPlayers AssignedPlayers(out CurrentPlayers currentPlayers)
-    {
-        return currentPlayers = selectedPlayers.UpdatePlayers(selectedPlayers.PlayerOne, selectedPlayers.PlayerTwo);
-    }
-
-    private void ReadPlayers()
-    {
-        string jsonString;
-        string filePath = Path.GetTempPath();
-        DirectoryInfo d = new DirectoryInfo(filePath);
-
-        foreach (var file in d.GetFiles("*.json"))
-        {
-            if (file.Name == "s0me_Bot.json")
-            {
-                jsonString = File.ReadAllText(file.FullName);
-                s0meBot = JsonSerializer.Deserialize<PlayerProfile>(jsonString);
-                Players.Add(s0meBot);
-            }
-            else
-            {
-                jsonString = File.ReadAllText(file.FullName);
-                PlayerProfile playerProfile = JsonSerializer.Deserialize<PlayerProfile>(jsonString);
-                Players.Add(playerProfile);
-            }
-        }
-        if (Players.Count == 0)
-        {
-            Players.Add(s0meBot);
-        }
-    }
-
     private async void NewButton_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new NewPlayerCreationPage(this));
     }
-
     private async void StartButton_Clicked(object sender, EventArgs e)
     {
-        //SelectPlayerOne.SelectedItem = null;
-        //SelectPlayerTwo.SelectedItem = null;
         await Navigation.PushAsync(new GamePage(this));
     }
-
     private void BackButton_Clicked(object sender, EventArgs e)
     {
         Navigation.PopAsync();
     }
 
+    //Read/Write
+    private async void ReadPlayers()
+    {
+        try
+        {
+            //Attempt to fetch saved player files and add to list
+            //After reading files add s0meBot (created in constructor) to list if it doesnt exist already
+            //E.g. if list is empty after attempt to add all the saved players (including s0meBot)
+            string jsonString;
+            string filePath = Path.GetTempPath();
+            DirectoryInfo d = new DirectoryInfo(filePath);
+
+            foreach (var file in d.GetFiles("*.json"))
+            {
+                if (file.Name == "s0me_Bot.json")
+                {
+                    jsonString = File.ReadAllText(file.FullName);
+                    s0meBot = JsonSerializer.Deserialize<PlayerProfile>(jsonString);
+                    Players.Add(s0meBot);
+                }
+                else
+                {
+                    jsonString = File.ReadAllText(file.FullName);
+                    PlayerProfile playerProfile = JsonSerializer.Deserialize<PlayerProfile>(jsonString);
+                    Players.Add(playerProfile);
+                }
+            }
+            if (Players.Count == 0)
+            {
+                Players.Add(s0meBot);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Huom", $"Virhe pelaajien hakemisessa: \n{ex.Message}", "Ok");
+        }
+    }
     public async void WritePlayers()
     {
         try
         {
-            //Get path to temp to save each player in their own .json file in temp
+            //Each player is saved in their own .json file in a predefined folder.
             string tempPath = Path.GetTempPath();
             string filePath;
             string fileName;
             string jsonString;
 
-            await DisplayAlert("HUOM", $"{Players.Count} pelaajaa tallennetaan.", "OK");
+            await DisplayAlert("Huom", $"{Players.Count} pelaajaa tallennetaan.", "OK");
             foreach (var player in Players)
             {
-                fileName = $"{player.FirstName}_{player.LastName}.json";
+                fileName = $"{player.FirstName}_{player.LastName}.json"; // E.g. s0me_Bot.json
                 filePath = Path.Combine(tempPath, fileName);
                 jsonString = JsonSerializer.Serialize(player);
                 await File.WriteAllTextAsync(filePath, jsonString);
@@ -133,7 +150,7 @@ public partial class PlayerSelectionPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Warning", "Could not write to file: \n{0}", "OK", ex.ToString());
+            await DisplayAlert("Huom", $"Virhe pelaajien tallentamisessa: \n{ex.Message}", "Ok");
         }
 
     }
@@ -170,7 +187,7 @@ public partial class PlayerSelectionPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Warning", "Could not write to file: \n{0}", "OK", ex.ToString());
+            await DisplayAlert("Huom", $"Virhe pelaajien tietojen tallentamisessa: \n{ex.Message}", "Ok");
         }
 
     }

@@ -4,7 +4,7 @@
              x:Class="Training.GamePage">
 
     <Grid
-        ColumnDefinitions="*, *"
+        ColumnDefinitions="2*, *"
         RowDefinitions="100, *"
         BackgroundColor="Gray">
 
@@ -34,7 +34,7 @@
         <Grid
             Grid.Column="0"
             Grid.Row="1"
-            ColumnDefinitions="40, *, 40"
+            ColumnDefinitions="*, 4*, *"
             RowDefinitions="*, 60">
 
 
@@ -46,8 +46,8 @@
                 MinimumHeightRequest="700"
                 MaximumWidthRequest="700"
                 MaximumHeightRequest="700"
-                ColumnDefinitions="100, 200, 200, 200"
-                RowDefinitions="100, 200, 200, 200">
+                ColumnDefinitions="Auto, 200, 200, 200"
+                RowDefinitions="Auto, 200, 200, 200">
                 <Label
                     Grid.Column="0"
                     Grid.Row="1"
@@ -193,12 +193,14 @@
                 Grid.Column="0"
                 Grid.Row="0"
                 Text="Pelaaja 1: X"
+                Margin="50"
                 FontSize="Medium"/>
             <Label
                 x:Name="Player2Definition"
                 Grid.Column="2"
                 Grid.Row="0"
                 Text="Pelaaja 2: O"
+                Margin="50"
                 FontSize="Medium"/>
 
         </Grid>

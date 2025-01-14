@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace Training;
 
 public partial class NewPlayerCreationPage : ContentPage
@@ -7,6 +9,7 @@ public partial class NewPlayerCreationPage : ContentPage
 	{
 		InitializeComponent();
         playerSelectionPage = sharedPlayerSelectionPage;
+        DateOfBirth.MaximumDate = DateTime.Now;
 	}
 
     private void CancelButton_Clicked(object sender, EventArgs e)
@@ -16,12 +19,15 @@ public partial class NewPlayerCreationPage : ContentPage
 
     private async void SaveNewButton_Clicked(object sender, EventArgs e)
     {
+        //Create new playerprofile when save button is clicked
         PlayerProfile player = new PlayerProfile();
         try
         {
             player.FirstName = FirstName.Text;
             player.LastName = LastName.Text;
+            
             player.DateOfBirth = DateOfBirth.Date.ToShortDateString();
+        
             player.Wins = 0;
             player.Losses = 0;
             player.Draws = 0;
@@ -33,7 +39,7 @@ public partial class NewPlayerCreationPage : ContentPage
             await Navigation.PopAsync();
         } catch (Exception ex)
         {
-            await DisplayAlert("Virhe", $"Jotain meni pieleen: { ex.Message}", "OK");
+            await DisplayAlert("Virhe", $"Virhe pelaajaprofiilin luonnissa: \n{ex.Message}", "Ok");
         }
     }
 }

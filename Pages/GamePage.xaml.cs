@@ -23,35 +23,40 @@ public partial class GamePage : ContentPage
     public GamePage(PlayerSelectionPage sharedPlayerSelectionPage)
 	{
 		InitializeComponent();
-        Moves = new ObservableCollection<Move>();
         playerSelectionPage = sharedPlayerSelectionPage;
+
+        //This list displays made moves during each game
+        Moves = new ObservableCollection<Move>();
+        movesList.ItemsSource = Moves;
 
         //get player names from PlayerSelectionPage and assign to player definitions
         players = playerSelectionPage.AssignedPlayers(out CurrentPlayers currentPlayers);
 
+        //Get selected player names from playerselectionpage and use them to display who'smturn it is
         player1Name = players.PlayerOne.FirstName;
         player2Name = players.PlayerTwo.FirstName;
-
         Player1Definition.Text = player1Name;
         Player2Definition.Text = player2Name;
 
-        TurnDefinition.Text = $"Pelaajan {player1Name} vuoro";
+        TurnDefinition.Text = $"Pelaajan {player1Name} vuoro"; //Player's turn default to player one (X)
 
+        //Game timer
         aTimer.Elapsed += OnTimedEvent;
         aTimer.Enabled = true;
         aTimer.AutoReset = true;
 
-        movesList.ItemsSource = Moves;
-
+        //If s0meBot has been selected as player one, it will start the game.
         if (players.PlayerOne.FirstName == "s0me")
         {
             BotTurnX();
         }
         
     }
+
+    //UI event handler (Game logic basically in this method)
     public async void SquareButton_Clicked(object sender, EventArgs e)
     {
-        //Check for winning conditions each turn
+        //Check for winning conditions each turn after button press
         //Add played turn and its info to 'Moves' to display it in the "siirrot" list
         //Array only for referencing to a played square to display in the "siirrot" list
         Button[,] squares = { { A1, A2, A3 }, { B1, B2, B3 }, { C1, C2, C3 } };
@@ -204,6 +209,8 @@ public partial class GamePage : ContentPage
             }
         }
     }
+
+    //Hardcoded move instructions for s0meBot, 
     private void BotTurnX()
     {
         //I could've used somekind of algorithm that makes the most "optimal move" 
@@ -1149,6 +1156,8 @@ public partial class GamePage : ContentPage
                 break;
         }
     }
+
+    //s0meBot uses these for deciding what moves should it make
     private Button CheckForLoss(string botInitial)
     {
         //This method checks for possible lost game by checking any predefined 2 consecutive squares in following order
@@ -1469,6 +1478,8 @@ public partial class GamePage : ContentPage
             return null;
         }
     }
+
+    //Winning conditions of TicTacToe
     private bool WinningConditionMet()
 	{
         //All the possible winning conditions below
@@ -1518,9 +1529,12 @@ public partial class GamePage : ContentPage
         //return false if no winning conditions are met
         return false;
 	}
+
+    //For timers
     private void OnTimedThinking(object sender, System.Timers.ElapsedEventArgs e)
     {
-        //Method for executing a "thinking time" for the bot before it makes the move
+        //Method for executing a "thinking time" for the bot before it makes its move
+        //to make it feel more "alive"
         bTimer.Close();
         if (playerTurn == 1)
         {
